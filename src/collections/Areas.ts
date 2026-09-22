@@ -5,6 +5,7 @@ export const Areas: CollectionConfig = {
   slug: 'areas',
   disableDuplicate: true,
   admin: {
+    group: 'Customers',
     useAsTitle: 'name', // This ensures the 'name' field is displayed instead of the ID
     groupBy: true,
   },

@@ -7,6 +7,7 @@ export const Expenses: CollectionConfig = {
   enableQueryPresets: true,
   disableDuplicate: true,
   admin: {
+    group: 'Finance',
     defaultColumns: ['title', 'type', 'amount', 'expenseAt'],
     groupBy: true,
   },

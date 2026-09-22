@@ -12,6 +12,7 @@ export const Sales: CollectionConfig = {
   disableDuplicate: true,
   disableBulkEdit: true,
   admin: {
+    group: 'Finance',
     defaultColumns: ['date', 'channel', 'customer',  'item.product', 'totals.gross', 'status'],
     useAsTitle: 'date',
     listSearchableFields: ['channel'],

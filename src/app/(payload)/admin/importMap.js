@@ -1,5 +1,6 @@
 import { default as default_da483b7c37723cd1fb5962da39c4695f } from '../../../components/LastDeliveredCell'
 import { ContactNumberCell as ContactNumberCell_73182a10d002044f26d480e9c0a389e0 } from '../../../components/Customers'
+import { DriverAppLink as DriverAppLink_91735f33071acecbd7cb388640edace0 } from '../../../components/Trips'
 import { GeneratePdfButton as GeneratePdfButton_91735f33071acecbd7cb388640edace0 } from '../../../components/Trips'
 import { Info as Info_91735f33071acecbd7cb388640edace0 } from '../../../components/Trips'
 import { Info as Info_488ef6f355413b33f772b45b13be87c2 } from '../../../components/Employees'
@@ -19,11 +20,13 @@ import { default as default_9fd2c1740c882e1d16745cda9662c7e6 } from '@/component
 import { Icon as Icon_f9f58eabab541759fc9306399f740359 } from '../../../graphics/Branding.tsx'
 import { Logo as Logo_f9f58eabab541759fc9306399f740359 } from '../../../graphics/Branding.tsx'
 import { default as default_233cffcda5b6a9cd29a5311e6976ccfd } from '../../../components/performance-overview/PerformanceOverview'
+import { default as default_20e6b0f93fa2e5b11760a2c1ae4720d3 } from '../../../components/performance-overview/BottleInventory'
 import { UploadthingClientUploadHandler as UploadthingClientUploadHandler_749dcaa11bb61b873d113cb6c609bc10 } from '@payloadcms/storage-uploadthing/client'
 
 export const importMap = {
   "/components/LastDeliveredCell#default": default_da483b7c37723cd1fb5962da39c4695f,
   "/components/Customers#ContactNumberCell": ContactNumberCell_73182a10d002044f26d480e9c0a389e0,
+  "/components/Trips#DriverAppLink": DriverAppLink_91735f33071acecbd7cb388640edace0,
   "/components/Trips#GeneratePdfButton": GeneratePdfButton_91735f33071acecbd7cb388640edace0,
   "/components/Trips#Info": Info_91735f33071acecbd7cb388640edace0,
   "/components/Employees#Info": Info_488ef6f355413b33f772b45b13be87c2,
@@ -43,5 +46,6 @@ export const importMap = {
   "/graphics/Branding.tsx#Icon": Icon_f9f58eabab541759fc9306399f740359,
   "/graphics/Branding.tsx#Logo": Logo_f9f58eabab541759fc9306399f740359,
   "/components/performance-overview/PerformanceOverview#default": default_233cffcda5b6a9cd29a5311e6976ccfd,
+  "/components/performance-overview/BottleInventory#default": default_20e6b0f93fa2e5b11760a2c1ae4720d3,
   "@payloadcms/storage-uploadthing/client#UploadthingClientUploadHandler": UploadthingClientUploadHandler_749dcaa11bb61b873d113cb6c609bc10
 }

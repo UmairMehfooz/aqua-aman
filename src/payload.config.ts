@@ -29,6 +29,8 @@ import { Invoice } from './collections/Invoices'
 import { Media } from './collections/Media'
 import { Reports } from './collections/Reports'
 import { Expenses } from './collections/Expenses'
+import { Messages } from './collections/Messages'
+import { Requests } from './collections/Requests'
 import { migrations } from './migrations'
 
 const filename = fileURLToPath(import.meta.url)
@@ -41,6 +43,8 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
     meta: {
+      titleSuffix: ' · Aqua Aman',
+      description: 'Aqua Aman water delivery management',
       icons: [
         {
           url: '/images/water-drop.png',
@@ -48,7 +52,10 @@ export default buildConfig({
       ],
     },
     components: {
-      beforeDashboard: ['/components/performance-overview/PerformanceOverview'],
+      beforeDashboard: [
+        '/components/performance-overview/PerformanceOverview',
+        '/components/performance-overview/BottleInventory',
+      ],
       graphics: {
         Icon: '/graphics/Branding.tsx#Icon',
         Logo: '/graphics/Branding.tsx#Logo',
@@ -69,6 +76,8 @@ export default buildConfig({
     Media,
     Reports,
     Expenses,
+    Requests,
+    Messages,
   ],
   jobs: {
     autoRun: [
@@ -102,8 +111,10 @@ export default buildConfig({
     }),
   ],
   email: nodemailerAdapter({
-    defaultFromAddress: process.env.FROM_EMAIL!,
-    defaultFromName: process.env.FROM_NAME!,
+    defaultFromAddress: process.env.FROM_EMAIL || 'noreply@aquaaman.local',
+    defaultFromName: process.env.FROM_NAME || 'Aqua Aman',
+    // Without SMTP credentials the transport can't be verified; skip the noisy startup check.
+    skipVerify: !process.env.SMTP_USER,
     transport: nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: 587,
@@ -121,6 +132,10 @@ export default buildConfig({
     {
       scriptPath: path.resolve(dirname, 'bin/sendPendingInvoices.ts'),
       key: 'send-pending-invoices',
+    },
+    {
+      scriptPath: path.resolve(dirname, 'bin/seedDemo.ts'),
+      key: 'seed-demo',
     },
   ],
   onInit: () => {

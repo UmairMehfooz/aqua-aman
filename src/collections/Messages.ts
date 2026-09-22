@@ -4,7 +4,7 @@ export const Messages: CollectionConfig = {
   slug: 'messages',
   admin: {
     defaultColumns: ['from', 'messages', 'read'],
-    hidden: true,
+    group: 'Communication',
   },
   access: {
     create: () => false,

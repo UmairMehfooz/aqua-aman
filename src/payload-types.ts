@@ -79,6 +79,8 @@ export interface Config {
     media: Media;
     reports: Report;
     expenses: Expense;
+    requests: Request;
+    messages: Message;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -114,6 +116,8 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     reports: ReportsSelect<false> | ReportsSelect<true>;
     expenses: ExpensesSelect<false> | ExpensesSelect<true>;
+    requests: RequestsSelect<false> | RequestsSelect<true>;
+    messages: MessagesSelect<false> | MessagesSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -290,6 +294,18 @@ export interface Transaction {
   adjustedConsumption?: string | null;
   daysUntilDelivery?: string | null;
   nextDeliveryDate?: string | null;
+  /**
+   * Recorded by the driver from the Driver App.
+   */
+  delivery?: {
+    status?: ('pending' | 'delivered' | 'skipped') | null;
+    /**
+     * Cash handed to the driver. Automatically added as a payment on the customer’s latest invoice.
+     */
+    cashCollected?: number | null;
+    deliveredAt?: string | null;
+    note?: string | null;
+  };
   analytics?: {
     consumptionRate?: number | null;
     adjustedConsumptionRate?: number | null;
@@ -319,6 +335,7 @@ export interface Trip {
   status?: ('inprogress' | 'complete') | null;
   deliveryDay?: ('monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday') | null;
   priority: ('URGENT' | 'HIGH' | 'MEDIUM' | 'LOW')[];
+  driverToken?: string | null;
   transactions?: {
     docs?: (string | Transaction)[];
     hasNextPage?: boolean;
@@ -564,6 +581,42 @@ export interface Expense {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "requests".
+ */
+export interface Request {
+  id: string;
+  from?: (string | Customer)[] | null;
+  phone?: string | null;
+  date: string;
+  fulfilled?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "messages".
+ */
+export interface Message {
+  id: string;
+  from?: (string | Customer)[] | null;
+  read?: boolean | null;
+  messages: {
+    fullMessage?:
+      | {
+          [k: string]: unknown;
+        }
+      | unknown[]
+      | string
+      | number
+      | boolean
+      | null;
+    id?: string | null;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs".
  */
 export interface PayloadJob {
@@ -708,6 +761,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'expenses';
         value: string | Expense;
+      } | null)
+    | ({
+        relationTo: 'requests';
+        value: string | Request;
+      } | null)
+    | ({
+        relationTo: 'messages';
+        value: string | Message;
       } | null)
     | ({
         relationTo: 'payload-jobs';
@@ -890,6 +951,7 @@ export interface TripsSelect<T extends boolean = true> {
   status?: T;
   deliveryDay?: T;
   priority?: T;
+  driverToken?: T;
   transactions?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -928,6 +990,14 @@ export interface TransactionSelect<T extends boolean = true> {
   adjustedConsumption?: T;
   daysUntilDelivery?: T;
   nextDeliveryDate?: T;
+  delivery?:
+    | T
+    | {
+        status?: T;
+        cashCollected?: T;
+        deliveredAt?: T;
+        note?: T;
+      };
   analytics?:
     | T
     | {
@@ -1080,6 +1150,34 @@ export interface ExpensesSelect<T extends boolean = true> {
   type?: T;
   expenseAt?: T;
   amount?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "requests_select".
+ */
+export interface RequestsSelect<T extends boolean = true> {
+  from?: T;
+  phone?: T;
+  date?: T;
+  fulfilled?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "messages_select".
+ */
+export interface MessagesSelect<T extends boolean = true> {
+  from?: T;
+  read?: T;
+  messages?:
+    | T
+    | {
+        fullMessage?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }

@@ -4,6 +4,9 @@ import { isAdmin } from './access/isAdmin'
 
 export const Media: CollectionConfig = {
   slug: 'media',
+  admin: {
+    group: 'System',
+  },
   access: {
     create: isAdmin,
     read: () => true,

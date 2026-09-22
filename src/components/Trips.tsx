@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { ServerComponentProps } from 'payload'
 import mongoose from 'mongoose'
+import { CopyLinkButton } from './CopyLinkButton'
 
 const rupee = new Intl.NumberFormat('en-PK', {
   style: 'currency',
@@ -74,6 +75,61 @@ export const Info = async (props: ServerComponentProps & { rowData: { id: string
           </div>
         )
       })}
+    </div>
+  )
+}
+
+/**
+ * Link to the phone-friendly Driver App for this trip (/driver/<token>).
+ * Shown as a button on the edit form and as a compact link in the list view.
+ */
+export const DriverAppLink = async (
+  props: ServerComponentProps & { rowData?: { id: string; driverToken?: string }; cell?: boolean },
+) => {
+  const id = props.id || props.rowData?.id
+  if (!id) return null
+
+  const trip = await props.req.payload.findByID({
+    collection: 'trips',
+    id,
+    depth: 0,
+    select: { driverToken: true },
+  })
+
+  if (!trip?.driverToken) {
+    return props.cell ? null : (
+      <p style={{ opacity: 0.7 }}>Save the trip once to generate the Driver App link.</p>
+    )
+  }
+
+  const path = `/driver/${trip.driverToken}`
+  const base = (process.env.URL || '').replace(/\/$/, '')
+  const fullUrl = `${base}${path}`
+
+  if (props.cell) {
+    return (
+      <Link href={path} target="_blank" className="btn btn--size-small btn--style-secondary">
+        Driver App
+      </Link>
+    )
+  }
+
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
+      <Link href={path} target="_blank" className="btn btn--size-medium btn--style-primary">
+        Open Driver App
+      </Link>
+      <CopyLinkButton url={fullUrl} />
+      <Link
+        href={`https://wa.me/?text=${encodeURIComponent(`Aqua Aman delivery trip: ${fullUrl}`)}`}
+        target="_blank"
+        className="btn btn--size-medium btn--style-secondary"
+      >
+        Share on WhatsApp
+      </Link>
+      <span style={{ opacity: 0.6, fontSize: 12, width: '100%' }}>
+        Anyone with this link can record deliveries for this trip. Share it only with the driver.
+      </span>
     </div>
   )
 }

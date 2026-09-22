@@ -12,6 +12,7 @@ export const rupee = new Intl.NumberFormat('en-PK', {
 export const Reports: CollectionConfig = {
   slug: 'reports',
   admin: {
+    group: 'Finance',
     defaultColumns: [
       'month',
       'totalCollection',

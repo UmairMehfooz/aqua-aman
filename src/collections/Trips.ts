@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { format } from 'date-fns'
+import { randomBytes } from 'crypto'
 
 import { createTransactionsOnTripCreate } from '@/hooks/trips/createTransactionsOnTripCreate'
 import { toggleTransactionsOnStatusChangeHook } from '@/hooks/trips/toggleTransactionsOnStatusChange'
@@ -10,9 +11,10 @@ export const Trips: CollectionConfig = {
   slug: 'trips',
   enableQueryPresets: true,
   admin: {
+    group: 'Operations',
     groupBy: true,
     useAsTitle: 'tripAt',
-    defaultColumns: ['tripAt', 'from', 'areas', 'bottles', 'employee', 'status', 'pdf'],
+    defaultColumns: ['tripAt', 'from', 'areas', 'bottles', 'employee', 'status', 'driverApp', 'pdf'],
   },
   access: {
     delete: isAdmin,
@@ -157,6 +159,33 @@ export const Trips: CollectionConfig = {
       ],
     },
     {
+      // Secret token that authorises the Driver App link for this trip (/driver/<token>).
+      name: 'driverToken',
+      type: 'text',
+      index: true,
+      admin: {
+        hidden: true,
+      },
+      hooks: {
+        beforeValidate: [({ value }) => value || randomBytes(18).toString('hex')],
+      },
+    },
+    {
+      name: 'driverApp',
+      label: 'Driver App',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: '/components/Trips#DriverAppLink',
+          Cell: {
+            path: '/components/Trips',
+            exportName: 'DriverAppLink',
+            serverProps: { cell: true },
+          },
+        },
+      },
+    },
+    {
       name: 'pdf',
       label: 'PDF Trip Report',
       type: 'ui',
@@ -194,6 +223,8 @@ export const Trips: CollectionConfig = {
           'customer',
           'bottleGiven',
           'bottleTaken',
+          'delivery.status',
+          'delivery.cashCollected',
           'lastDelivered',
           'priority',
           'weeklyConsumption',

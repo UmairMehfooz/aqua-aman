@@ -7,6 +7,7 @@ export const Employee: CollectionConfig = {
   disableDuplicate: true,
   trash: true,
   admin: {
+    group: 'Team',
     useAsTitle: 'name',
     components: {
       beforeListTable: ['/components/Employees#Info']

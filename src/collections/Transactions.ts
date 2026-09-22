@@ -9,6 +9,7 @@ export const Transaction: CollectionConfig = {
   enableQueryPresets: true,
   disableDuplicate: true,
   admin: {
+    group: 'Operations',
     pagination: {
       defaultLimit: 50,
     },
@@ -21,6 +22,8 @@ export const Transaction: CollectionConfig = {
       'remainingBottles',
       'total',
       'status',
+      'delivery.status',
+      'delivery.cashCollected',
       'trip',
     ],
     groupBy: true
@@ -196,6 +199,56 @@ export const Transaction: CollectionConfig = {
           displayFormat: 'd MMM yyyy',
         }
       },
+    },
+    {
+      // Filled in by the driver from the Driver App (/driver/<trip token>).
+      name: 'delivery',
+      type: 'group',
+      admin: {
+        description: 'Recorded by the driver from the Driver App.',
+      },
+      fields: [
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'status',
+              type: 'select',
+              defaultValue: 'pending',
+              options: [
+                { label: 'Pending', value: 'pending' },
+                { label: 'Delivered', value: 'delivered' },
+                { label: 'Skipped', value: 'skipped' },
+              ],
+              admin: { width: '33.33%' },
+            },
+            {
+              name: 'cashCollected',
+              type: 'number',
+              defaultValue: 0,
+              min: 0,
+              admin: {
+                width: '33.33%',
+                description: 'Cash handed to the driver. Automatically added as a payment on the customer’s latest invoice.',
+              },
+            },
+            {
+              name: 'deliveredAt',
+              type: 'date',
+              admin: {
+                width: '33.33%',
+                readOnly: true,
+                date: { pickerAppearance: 'dayAndTime', displayFormat: 'd MMM yyyy h:mm a' },
+              },
+            },
+          ],
+        },
+        {
+          name: 'note',
+          type: 'text',
+          admin: { placeholder: 'e.g. Nobody home, left 2 bottles with guard' },
+        },
+      ],
     },
     {
       name: 'analytics',

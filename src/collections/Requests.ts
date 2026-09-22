@@ -4,7 +4,7 @@ export const Requests: CollectionConfig = {
   slug: 'requests',
   admin: {
     defaultColumns: ['from', 'phone', 'date', 'fulfilled'],
-    hidden: true,
+    group: 'Communication',
   },
   fields: [
     {

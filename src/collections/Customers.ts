@@ -10,6 +10,7 @@ export const Customers: CollectionConfig = {
   disableDuplicate: true,
   trash: true,
   admin: {
+    group: 'Customers',
     useAsTitle: 'name',
     defaultColumns: ['name', 'address', 'lastDelivered', 'area', 'block', 'rate'],
     listSearchableFields: ['name', 'address'],

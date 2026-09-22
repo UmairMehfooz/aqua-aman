@@ -5,6 +5,7 @@ export const Blocks: CollectionConfig = {
   slug: 'blocks',
   disableDuplicate: true,
   admin: {
+    group: 'Customers',
     useAsTitle: 'name', // Display the block name instead of ID
     groupBy: true,
   },
